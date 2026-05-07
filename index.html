@@ -1,0 +1,1869 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Nicole Amoguis — Software Engineer</title>
+    <meta
+      name="description"
+      content="Nicole Amoguis — Full-stack software engineer. Selected work, experience, and contact."
+    />
+    <meta name="theme-color" content="#FAFAFA" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              ink: "#09090B",
+              primary: "#18181B",
+              muted: "#3F3F46",
+              soft: "#71717A",
+              line: "#E4E4E7",
+              page: "#FAFAFA",
+              cta: "#2563EB",
+              ctaHover: "#1D4ED8",
+            },
+            fontFamily: {
+              display: ["Archivo", "ui-sans-serif", "system-ui"],
+              sans: ['"Space Grotesk"', "ui-sans-serif", "system-ui"],
+            },
+            maxWidth: { content: "72rem" },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      html {
+        font-feature-settings: "ss01", "cv11";
+      }
+      body {
+        font-family: "Space Grotesk", ui-sans-serif, system-ui;
+        color: #09090b;
+        background: #fafafa;
+      }
+      h1,
+      h2,
+      h3,
+      h4 {
+        font-family: "Archivo", ui-sans-serif, system-ui;
+        letter-spacing: -0.02em;
+      }
+      .grain::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0.035;
+        background-image: radial-gradient(#000 1px, transparent 1px);
+        background-size: 3px 3px;
+      }
+      .reveal {
+        opacity: 0;
+        transform: translateY(8px);
+        transition:
+          opacity 600ms ease,
+          transform 600ms ease;
+      }
+      .reveal.in {
+        opacity: 1;
+        transform: none;
+      }
+      /* ===== Project "fan" — multi-photo stacked petals ===== */
+      .fan {
+        position: relative;
+        aspect-ratio: 16 / 9;
+        margin: 0.25rem 0.5rem 0.5rem;
+      }
+      .fan img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 0.875rem;
+        border: 1px solid #e4e4e7;
+        box-shadow: 0 6px 18px rgba(9, 9, 11, 0.08);
+        transition:
+          transform 550ms cubic-bezier(0.2, 0.8, 0.2, 1),
+          box-shadow 400ms ease;
+        transform-origin: center bottom;
+        will-change: transform;
+        background: #fafafa;
+      }
+      .fan-back-l {
+        transform: rotate(-7deg) translate(-3%, 2%) scale(0.97);
+        z-index: 1;
+      }
+      .fan-back-r {
+        transform: rotate(7deg) translate(3%, 2%) scale(0.97);
+        z-index: 2;
+      }
+      .fan-back {
+        transform: rotate(6deg) translate(3%, 2%) scale(0.97);
+        z-index: 2;
+      }
+      .fan-front {
+        z-index: 3;
+      }
+      .project-card:hover .fan-back-l,
+      .project-card:focus-visible .fan-back-l {
+        transform: rotate(-13deg) translate(-9%, 5%) scale(0.96);
+      }
+      .project-card:hover .fan-back-r,
+      .project-card:focus-visible .fan-back-r {
+        transform: rotate(13deg) translate(9%, 5%) scale(0.96);
+      }
+      .project-card:hover .fan-back,
+      .project-card:focus-visible .fan-back {
+        transform: rotate(12deg) translate(8%, 4%) scale(0.96);
+      }
+      .project-card:hover .fan-front,
+      .project-card:focus-visible .fan-front {
+        transform: translateY(-3%) scale(1.02);
+        box-shadow: 0 16px 32px rgba(9, 9, 11, 0.18);
+      }
+      .project-card {
+        transition:
+          transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1),
+          border-color 200ms ease,
+          box-shadow 300ms ease;
+      }
+      .project-card:active {
+        transform: scale(0.985);
+      }
+
+      /* ===== Project lightbox modal ===== */
+      .project-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 60;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        opacity: 0;
+        transition: opacity 280ms ease;
+      }
+      .project-modal.show {
+        display: flex;
+      }
+      .project-modal.open {
+        opacity: 1;
+      }
+      .project-modal-backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(9, 9, 11, 0.7);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+      .project-modal-panel {
+        position: relative;
+        background: #fff;
+        border-radius: 1.5rem;
+        max-width: 64rem;
+        width: 100%;
+        max-height: 92vh;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        transform: scale(0.94);
+        transition: transform 380ms cubic-bezier(0.2, 0.8, 0.2, 1);
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+      }
+      .project-modal.open .project-modal-panel {
+        transform: scale(1);
+      }
+      .project-modal-body {
+        overflow-y: auto;
+      }
+      .modal-primary-img {
+        transition: opacity 180ms ease;
+      }
+      .thumb {
+        transition:
+          opacity 200ms ease,
+          transform 200ms ease,
+          border-color 200ms ease;
+        opacity: 0.6;
+      }
+      .thumb:hover {
+        opacity: 0.9;
+        transform: translateY(-2px);
+      }
+      .thumb.active {
+        opacity: 1;
+        border-color: #2563eb;
+      }
+
+      /* "Scroll for more" hint inside the project modal */
+      .modal-scroll-hint {
+        position: absolute;
+        bottom: 1rem;
+        left: 50%;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        color: #fff;
+        background: rgba(9, 9, 11, 0.78);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border-radius: 9999px;
+        padding: 0.45rem 0.9rem;
+        font-size: 0.72rem;
+        letter-spacing: 0.04em;
+        font-weight: 500;
+        pointer-events: none;
+        opacity: 0;
+        transform: translate(-50%, 8px);
+        transition:
+          opacity 300ms ease,
+          transform 300ms ease;
+        z-index: 5;
+        white-space: nowrap;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+      }
+      .modal-scroll-hint.show {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+      .modal-scroll-hint svg {
+        animation: hint-bounce 1.4s ease-in-out infinite;
+      }
+      @keyframes hint-bounce {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(3px);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .reveal {
+          opacity: 1;
+          transform: none;
+          transition: none;
+        }
+        * {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body class="grain antialiased selection:bg-cta/15 selection:text-ink">
+    <a
+      href="#main"
+      class="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:top-3 focus-visible:left-3 focus-visible:z-50 focus-visible:bg-ink focus-visible:text-white focus-visible:px-3 focus-visible:py-2 focus-visible:rounded"
+      >Skip to content</a
+    >
+
+    <!-- ===== Floating Navbar ===== -->
+    <header class="fixed top-4 inset-x-4 z-40 flex justify-center">
+      <nav
+        aria-label="Primary"
+        class="w-full max-w-content rounded-full border border-line bg-white/85 backdrop-blur px-4 sm:px-6 py-2.5 flex items-center justify-between shadow-[0_1px_0_rgba(9,9,11,0.04)]"
+      >
+        <a
+          href="#top"
+          class="font-display font-semibold tracking-tight text-ink text-base sm:text-lg cursor-pointer"
+        >
+          Nicole Amoguis<span class="text-cta"></span>
+        </a>
+        <ul class="hidden md:flex items-center gap-7 text-sm text-muted">
+          <li>
+            <a
+              class="hover:text-ink transition-colors duration-200 cursor-pointer"
+              href="#work"
+              >Work</a
+            >
+          </li>
+          <li>
+            <a
+              class="hover:text-ink transition-colors duration-200 cursor-pointer"
+              href="#about"
+              >About</a
+            >
+          </li>
+          <li>
+            <a
+              class="hover:text-ink transition-colors duration-200 cursor-pointer"
+              href="#skills"
+              >Skills</a
+            >
+          </li>
+          <li>
+            <a
+              class="hover:text-ink transition-colors duration-200 cursor-pointer"
+              href="#experience"
+              >Education</a
+            >
+          </li>
+          <li>
+            <a
+              class="hover:text-ink transition-colors duration-200 cursor-pointer"
+              href="#contact"
+              >Contact</a
+            >
+          </li>
+        </ul>
+        <a
+          href="#contact"
+          class="inline-flex items-center gap-1.5 text-sm font-medium rounded-full bg-ink text-white px-4 py-2 hover:bg-cta transition-colors duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cta focus-visible:ring-offset-2 focus-visible:ring-offset-page"
+        >
+          Get in touch
+          <svg
+            class="w-4 h-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M5 12h14M13 5l7 7-7 7"
+            />
+          </svg>
+        </a>
+      </nav>
+    </header>
+
+    <main id="main" class="relative z-10">
+      <!-- ===== Hero ===== -->
+      <section id="top" class="pt-36 sm:pt-44 pb-24 sm:pb-32 px-6">
+        <div class="max-w-content mx-auto">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+            <div class="lg:col-span-8 order-2 lg:order-1">
+              <p
+                class="reveal inline-flex items-center gap-2 text-xs uppercase tracking-[0.18em] text-muted"
+              >
+                <span class="relative flex h-2 w-2">
+                  <span
+                    class="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60 animate-ping"
+                  ></span>
+                  <span
+                    class="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"
+                  ></span>
+                </span>
+                Open to internships · Graduating 2026
+              </p>
+
+              <h1
+                class="reveal mt-6 font-display font-semibold text-5xl sm:text-7xl lg:text-8xl leading-[0.95] text-ink tracking-tight"
+              >
+                Nicole Amoguis<span class="text-cta"></span>
+              </h1>
+
+              <p
+                class="reveal mt-6 sm:mt-7 font-display font-semibold text-3xl sm:text-4xl lg:text-5xl leading-[1.05] text-soft tracking-tight"
+              >
+                I design, build, and
+                <span class="relative inline-block text-ink">
+                  ship
+                  <span
+                    aria-hidden="true"
+                    class="absolute inset-x-0 bottom-1 sm:bottom-1.5 h-2 sm:h-2.5 lg:h-3 bg-cta/25 -z-10 rounded-sm"
+                  ></span>
+                </span>
+                full-stack apps —<br class="hidden sm:inline" />
+                for web &amp; mobile.
+              </p>
+
+              <p
+                class="reveal mt-8 max-w-2xl text-lg sm:text-xl text-muted leading-relaxed"
+              >
+                4th-year Computer Science student at the
+                <span class="text-ink font-medium"
+                  >University of the Philippines Visayas</span
+                >. Most at home in TypeScript, Next.js, and Firebase — with
+                Flutter when something needs to ship to phones.
+              </p>
+
+              <div class="reveal mt-10 flex flex-wrap items-center gap-3">
+                <a
+                  href="#work"
+                  class="group inline-flex items-center gap-2 rounded-full bg-ink text-white px-6 py-3 text-sm font-medium hover:bg-cta transition-colors duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cta focus-visible:ring-offset-2 focus-visible:ring-offset-page"
+                >
+                  View selected work
+                  <svg
+                    class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    aria-hidden="true"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M5 12h14M13 5l7 7-7 7"
+                    />
+                  </svg>
+                </a>
+                <a
+                  href="Nicole-Amoguis-Resume.pdf"
+                  download
+                  type="application/pdf"
+                  class="inline-flex items-center gap-2 rounded-full border border-line bg-white text-ink px-6 py-3 text-sm font-medium hover:border-ink transition-colors duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-page"
+                >
+                  <svg
+                    class="w-4 h-4"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    aria-hidden="true"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"
+                    />
+                  </svg>
+                  Download résumé
+                </a>
+                <a
+                  href="mailto:cagasansinio24@gmail.com"
+                  class="inline-flex items-center gap-2 rounded-full text-sm font-medium text-muted hover:text-ink transition-colors duration-200 cursor-pointer px-3 py-3"
+                >
+                  cagasansinio24@gmail.com
+                </a>
+              </div>
+            </div>
+
+            <!-- Portrait -->
+            <div
+              class="reveal lg:col-span-4 order-1 lg:order-2 flex justify-center lg:justify-end"
+            >
+              <div class="relative">
+                <span
+                  class="absolute inset-0 rounded-full bg-gradient-to-br from-cta/25 via-emerald-200/30 to-amber-100/30 blur-2xl"
+                  aria-hidden="true"
+                ></span>
+                <img
+                  src="my%20picture.jpg"
+                  alt="Portrait of Nicole Amoguis"
+                  class="relative w-48 h-48 sm:w-64 sm:h-64 lg:w-80 lg:h-80 rounded-full object-cover ring-4 ring-white shadow-[0_20px_50px_rgba(9,9,11,0.18)]"
+                  style="object-position: 50% 22%"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Education highlight -->
+          <div class="reveal mt-16 sm:mt-24 border-t border-line pt-8">
+            <p class="text-xs uppercase tracking-[0.18em] text-soft mb-5">
+              Education
+            </p>
+            <div
+              class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
+            >
+              <p
+                class="font-display font-semibold tracking-tight text-ink text-lg sm:text-xl"
+              >
+                University of the Philippines Visayas
+              </p>
+              <p class="text-sm text-soft">
+                BS Computer Science · 4th Year · 2022 — 2026 (Expected)
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Selected Work ===== -->
+      <section id="work" class="py-24 sm:py-32 px-6 border-t border-line">
+        <div class="max-w-content mx-auto">
+          <div class="flex items-end justify-between gap-6 mb-12">
+            <div>
+              <p class="text-xs uppercase tracking-[0.18em] text-muted">
+                01 — Selected Work
+              </p>
+              <h2 class="mt-3 text-3xl sm:text-5xl font-semibold text-ink">
+                Things I’ve shipped.
+              </h2>
+            </div>
+            <a
+              href="https://github.com/colasnido"
+              target="_blank"
+              rel="noreferrer noopener"
+              class="hidden sm:inline-flex items-center gap-1.5 text-sm text-muted hover:text-ink transition-colors duration-200 cursor-pointer"
+            >
+              All projects on GitHub
+              <svg
+                class="w-4 h-4"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M14 3h7v7M10 14L21 3M21 14v7H3V3h7"
+                />
+              </svg>
+            </a>
+          </div>
+
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+            <!-- BNHS-CIS-Web -->
+            <button
+              type="button"
+              data-project="bnhs"
+              aria-haspopup="dialog"
+              aria-controls="projectModal"
+              aria-label="Open BNHS-CIS-Web project gallery"
+              class="project-card reveal group relative text-left rounded-xl border border-line bg-white p-1.5 hover:border-ink/40 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cta focus-visible:ring-offset-2 focus-visible:ring-offset-page"
+            >
+              <div class="fan">
+                <img
+                  class="fan-back-l"
+                  src="BNHS%20CIS%20Web%20(2).png"
+                  alt=""
+                  loading="lazy"
+                />
+                <img
+                  class="fan-back-r"
+                  src="BNHS%20CIS%20Web%20(3).png"
+                  alt=""
+                  loading="lazy"
+                />
+                <img
+                  class="fan-front"
+                  src="BNHS%20CIS%20Web%20(1).png"
+                  alt="BNHS-CIS-Web admin dashboard"
+                  loading="lazy"
+                />
+              </div>
+              <div class="px-1.5 pt-1 pb-1.5">
+                <h3 class="text-sm font-semibold text-ink truncate">
+                  BNHS-CIS-Web
+                </h3>
+                <ul class="mt-1.5 flex flex-wrap gap-1">
+                  <li
+                    class="text-[10px] text-muted border border-line rounded-full px-1.5 py-0.5"
+                  >
+                    Next.js
+                  </li>
+                  <li
+                    class="text-[10px] text-muted border border-line rounded-full px-1.5 py-0.5"
+                  >
+                    Firebase
+                  </li>
+                </ul>
+              </div>
+            </button>
+
+            <!-- UPV OATS -->
+            <button
+              type="button"
+              data-project="oats"
+              aria-haspopup="dialog"
+              aria-controls="projectModal"
+              aria-label="Open UPV OATS project gallery"
+              class="project-card reveal group relative text-left rounded-xl border border-line bg-white p-1.5 hover:border-ink/40 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cta focus-visible:ring-offset-2 focus-visible:ring-offset-page"
+            >
+              <div class="fan">
+                <img
+                  class="fan-back"
+                  src="UPV%20OATS%20(1).png"
+                  alt=""
+                  loading="lazy"
+                />
+                <img
+                  class="fan-front"
+                  src="UPV%20OATS%20(2).png"
+                  alt="UPV OATS dashboard with upcoming appointments and calendar"
+                  loading="lazy"
+                />
+              </div>
+              <div class="px-1.5 pt-1 pb-1.5">
+                <h3 class="text-sm font-semibold text-ink truncate">
+                  UPV OATS
+                </h3>
+                <ul class="mt-1.5 flex flex-wrap gap-1">
+                  <li
+                    class="text-[10px] text-muted border border-line rounded-full px-1.5 py-0.5"
+                  >
+                    Next.js
+                  </li>
+                  <li
+                    class="text-[10px] text-muted border border-line rounded-full px-1.5 py-0.5"
+                  >
+                    Firebase
+                  </li>
+                </ul>
+              </div>
+            </button>
+
+            <!-- QRadar -->
+            <button
+              type="button"
+              data-project="qradar"
+              aria-haspopup="dialog"
+              aria-controls="projectModal"
+              aria-label="Open QRadar project gallery"
+              class="project-card reveal group relative text-left rounded-xl border border-line bg-white p-1.5 hover:border-ink/40 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cta focus-visible:ring-offset-2 focus-visible:ring-offset-page"
+            >
+              <div class="fan">
+                <img
+                  class="fan-back-l"
+                  src="qrscanner%20(2).jpg"
+                  alt=""
+                  loading="lazy"
+                />
+                <img
+                  class="fan-back-r"
+                  src="qrscanner%20(3).jpg"
+                  alt=""
+                  loading="lazy"
+                />
+                <img
+                  class="fan-front"
+                  src="qrscanner%20(1).jpg"
+                  alt="QRadar mobile app scanning a QR code"
+                  loading="lazy"
+                />
+              </div>
+              <div class="px-1.5 pt-1 pb-1.5">
+                <h3 class="text-sm font-semibold text-ink truncate">QRadar</h3>
+                <ul class="mt-1.5 flex flex-wrap gap-1">
+                  <li
+                    class="text-[10px] text-muted border border-line rounded-full px-1.5 py-0.5"
+                  >
+                    Flutter
+                  </li>
+                  <li
+                    class="text-[10px] text-muted border border-line rounded-full px-1.5 py-0.5"
+                  >
+                    Security
+                  </li>
+                </ul>
+              </div>
+            </button>
+
+            <!-- Fishernet -->
+            <button
+              type="button"
+              data-project="fishernet"
+              aria-haspopup="dialog"
+              aria-controls="projectModal"
+              aria-label="Open Fishernet project gallery"
+              class="project-card reveal group relative text-left rounded-xl border border-line bg-white p-1.5 hover:border-ink/40 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cta focus-visible:ring-offset-2 focus-visible:ring-offset-page"
+            >
+              <div class="fan">
+                <img
+                  class="fan-back-l"
+                  src="fishernet%20(2).png"
+                  alt=""
+                  loading="lazy"
+                />
+                <img
+                  class="fan-back-r"
+                  src="fishernet%20(3).png"
+                  alt=""
+                  loading="lazy"
+                />
+                <img
+                  class="fan-front"
+                  src="fishernet%20(1).png"
+                  alt="Fishernet web dashboard for fishermen"
+                  loading="lazy"
+                />
+              </div>
+              <div class="px-1.5 pt-1 pb-1.5">
+                <h3 class="text-sm font-semibold text-ink truncate">
+                  Fishernet
+                </h3>
+                <ul class="mt-1.5 flex flex-wrap gap-1">
+                  <li
+                    class="text-[10px] text-muted border border-line rounded-full px-1.5 py-0.5"
+                  >
+                    PHP
+                  </li>
+                  <li
+                    class="text-[10px] text-muted border border-line rounded-full px-1.5 py-0.5"
+                  >
+                    MySQL
+                  </li>
+                </ul>
+              </div>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== About ===== -->
+      <section
+        id="about"
+        class="py-24 sm:py-32 px-6 border-t border-line bg-white"
+      >
+        <div
+          class="max-w-content mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12"
+        >
+          <div class="lg:col-span-4">
+            <p class="text-xs uppercase tracking-[0.18em] text-muted">
+              02 — About
+            </p>
+            <h2 class="mt-3 text-3xl sm:text-5xl font-semibold text-ink">
+              A short<br />introduction.
+            </h2>
+          </div>
+          <div
+            class="lg:col-span-7 lg:col-start-6 space-y-5 text-lg text-muted leading-relaxed"
+          >
+            <p>
+              I’m <span class="text-ink font-medium">Nicole Amoguis</span>, a
+              4th-year Computer Science student at the
+              <span class="text-ink font-medium"
+                >University of the Philippines Visayas</span
+              >. I work across the stack — most at home in TypeScript, React,
+              and Next.js, with Firebase on the back end and Flutter for mobile.
+            </p>
+            <p>
+              My projects are where I learn the most. From a campus information
+              system serving an entire high school to a QR phishing analyzer
+              with a four-module security pipeline, I gravitate toward systems
+              that real people actually use — not toy demos.
+            </p>
+            <p>
+              I care about clear interfaces, honest error states, and code the
+              next person can read. Currently looking for an internship or
+              entry-level role where I can keep building things that matter.
+            </p>
+
+            <!-- Stack -->
+            <div class="pt-6">
+              <p class="text-xs uppercase tracking-[0.18em] text-soft mb-3">
+                Stack
+              </p>
+              <ul class="flex flex-wrap gap-2">
+                <li
+                  class="text-sm text-ink border border-line rounded-full px-3 py-1.5"
+                >
+                  TypeScript
+                </li>
+                <li
+                  class="text-sm text-ink border border-line rounded-full px-3 py-1.5"
+                >
+                  React / Next.js
+                </li>
+                <li
+                  class="text-sm text-ink border border-line rounded-full px-3 py-1.5"
+                >
+                  Tailwind CSS
+                </li>
+                <li
+                  class="text-sm text-ink border border-line rounded-full px-3 py-1.5"
+                >
+                  Firebase
+                </li>
+                <li
+                  class="text-sm text-ink border border-line rounded-full px-3 py-1.5"
+                >
+                  Flutter / Dart
+                </li>
+                <li
+                  class="text-sm text-ink border border-line rounded-full px-3 py-1.5"
+                >
+                  PHP / MySQL
+                </li>
+                <li
+                  class="text-sm text-ink border border-line rounded-full px-3 py-1.5"
+                >
+                  Python
+                </li>
+                <li
+                  class="text-sm text-ink border border-line rounded-full px-3 py-1.5"
+                >
+                  Git
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Skills ===== -->
+      <section id="skills" class="py-24 sm:py-32 px-6 border-t border-line">
+        <div class="max-w-content mx-auto">
+          <div class="mb-12">
+            <p class="text-xs uppercase tracking-[0.18em] text-muted">
+              03 — Skills
+            </p>
+            <h2 class="mt-3 text-3xl sm:text-5xl font-semibold text-ink">
+              Skills &amp; Expertise.
+            </h2>
+          </div>
+
+          <!-- Edit data-skill-target (0–100) and the label to tweak any row. -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
+            <div
+              class="skill reveal rounded-2xl border border-line bg-white p-5 sm:p-6"
+              data-skill-target="90"
+            >
+              <div class="flex items-center justify-between mb-3">
+                <span class="font-display font-semibold text-ink"
+                  >TypeScript / JavaScript</span
+                >
+                <span
+                  class="text-sm font-medium text-muted tabular-nums"
+                  data-skill-num
+                  >0%</span
+                >
+              </div>
+              <div
+                class="h-2 bg-line rounded-full overflow-hidden"
+                role="progressbar"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="90"
+                aria-label="TypeScript / JavaScript proficiency"
+              >
+                <div
+                  class="h-full bg-cta rounded-full"
+                  data-skill-bar
+                  style="width: 0%"
+                ></div>
+              </div>
+            </div>
+
+            <div
+              class="skill reveal rounded-2xl border border-line bg-white p-5 sm:p-6"
+              data-skill-target="85"
+            >
+              <div class="flex items-center justify-between mb-3">
+                <span class="font-display font-semibold text-ink"
+                  >React / Next.js</span
+                >
+                <span
+                  class="text-sm font-medium text-muted tabular-nums"
+                  data-skill-num
+                  >0%</span
+                >
+              </div>
+              <div
+                class="h-2 bg-line rounded-full overflow-hidden"
+                role="progressbar"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="85"
+                aria-label="React / Next.js proficiency"
+              >
+                <div
+                  class="h-full bg-cta rounded-full"
+                  data-skill-bar
+                  style="width: 0%"
+                ></div>
+              </div>
+            </div>
+
+            <div
+              class="skill reveal rounded-2xl border border-line bg-white p-5 sm:p-6"
+              data-skill-target="90"
+            >
+              <div class="flex items-center justify-between mb-3">
+                <span class="font-display font-semibold text-ink"
+                  >Tailwind CSS</span
+                >
+                <span
+                  class="text-sm font-medium text-muted tabular-nums"
+                  data-skill-num
+                  >0%</span
+                >
+              </div>
+              <div
+                class="h-2 bg-line rounded-full overflow-hidden"
+                role="progressbar"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="90"
+                aria-label="Tailwind CSS proficiency"
+              >
+                <div
+                  class="h-full bg-cta rounded-full"
+                  data-skill-bar
+                  style="width: 0%"
+                ></div>
+              </div>
+            </div>
+
+            <div
+              class="skill reveal rounded-2xl border border-line bg-white p-5 sm:p-6"
+              data-skill-target="80"
+            >
+              <div class="flex items-center justify-between mb-3">
+                <span class="font-display font-semibold text-ink"
+                  >Firebase (Auth · Firestore · Storage)</span
+                >
+                <span
+                  class="text-sm font-medium text-muted tabular-nums"
+                  data-skill-num
+                  >0%</span
+                >
+              </div>
+              <div
+                class="h-2 bg-line rounded-full overflow-hidden"
+                role="progressbar"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="80"
+                aria-label="Firebase proficiency"
+              >
+                <div
+                  class="h-full bg-cta rounded-full"
+                  data-skill-bar
+                  style="width: 0%"
+                ></div>
+              </div>
+            </div>
+
+            <div
+              class="skill reveal rounded-2xl border border-line bg-white p-5 sm:p-6"
+              data-skill-target="75"
+            >
+              <div class="flex items-center justify-between mb-3">
+                <span class="font-display font-semibold text-ink"
+                  >PHP / MySQL</span
+                >
+                <span
+                  class="text-sm font-medium text-muted tabular-nums"
+                  data-skill-num
+                  >0%</span
+                >
+              </div>
+              <div
+                class="h-2 bg-line rounded-full overflow-hidden"
+                role="progressbar"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="75"
+                aria-label="PHP and MySQL proficiency"
+              >
+                <div
+                  class="h-full bg-cta rounded-full"
+                  data-skill-bar
+                  style="width: 0%"
+                ></div>
+              </div>
+            </div>
+
+            <div
+              class="skill reveal rounded-2xl border border-line bg-white p-5 sm:p-6"
+              data-skill-target="70"
+            >
+              <div class="flex items-center justify-between mb-3">
+                <span class="font-display font-semibold text-ink"
+                  >Flutter / Dart</span
+                >
+                <span
+                  class="text-sm font-medium text-muted tabular-nums"
+                  data-skill-num
+                  >0%</span
+                >
+              </div>
+              <div
+                class="h-2 bg-line rounded-full overflow-hidden"
+                role="progressbar"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="70"
+                aria-label="Flutter and Dart proficiency"
+              >
+                <div
+                  class="h-full bg-cta rounded-full"
+                  data-skill-bar
+                  style="width: 0%"
+                ></div>
+              </div>
+            </div>
+
+            <div
+              class="skill reveal rounded-2xl border border-line bg-white p-5 sm:p-6"
+              data-skill-target="90"
+            >
+              <div class="flex items-center justify-between mb-3">
+                <span class="font-display font-semibold text-ink">HTML</span>
+                <span
+                  class="text-sm font-medium text-muted tabular-nums"
+                  data-skill-num
+                  >0%</span
+                >
+              </div>
+              <div
+                class="h-2 bg-line rounded-full overflow-hidden"
+                role="progressbar"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="90"
+                aria-label="HTML proficiency"
+              >
+                <div
+                  class="h-full bg-cta rounded-full"
+                  data-skill-bar
+                  style="width: 0%"
+                ></div>
+              </div>
+            </div>
+
+            <div
+              class="skill reveal rounded-2xl border border-line bg-white p-5 sm:p-6"
+              data-skill-target="85"
+            >
+              <div class="flex items-center justify-between mb-3">
+                <span class="font-display font-semibold text-ink">CSS</span>
+                <span
+                  class="text-sm font-medium text-muted tabular-nums"
+                  data-skill-num
+                  >0%</span
+                >
+              </div>
+              <div
+                class="h-2 bg-line rounded-full overflow-hidden"
+                role="progressbar"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="85"
+                aria-label="CSS proficiency"
+              >
+                <div
+                  class="h-full bg-cta rounded-full"
+                  data-skill-bar
+                  style="width: 0%"
+                ></div>
+              </div>
+            </div>
+
+            <div
+              class="skill reveal rounded-2xl border border-line bg-white p-5 sm:p-6"
+              data-skill-target="70"
+            >
+              <div class="flex items-center justify-between mb-3">
+                <span class="font-display font-semibold text-ink">Python</span>
+                <span
+                  class="text-sm font-medium text-muted tabular-nums"
+                  data-skill-num
+                  >0%</span
+                >
+              </div>
+              <div
+                class="h-2 bg-line rounded-full overflow-hidden"
+                role="progressbar"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="70"
+                aria-label="Python proficiency"
+              >
+                <div
+                  class="h-full bg-cta rounded-full"
+                  data-skill-bar
+                  style="width: 0%"
+                ></div>
+              </div>
+            </div>
+
+            <div
+              class="skill reveal rounded-2xl border border-line bg-white p-5 sm:p-6"
+              data-skill-target="65"
+            >
+              <div class="flex items-center justify-between mb-3">
+                <span class="font-display font-semibold text-ink">C / C#</span>
+                <span
+                  class="text-sm font-medium text-muted tabular-nums"
+                  data-skill-num
+                  >0%</span
+                >
+              </div>
+              <div
+                class="h-2 bg-line rounded-full overflow-hidden"
+                role="progressbar"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="65"
+                aria-label="C and C# proficiency"
+              >
+                <div
+                  class="h-full bg-cta rounded-full"
+                  data-skill-bar
+                  style="width: 0%"
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Experience ===== -->
+      <section
+        id="experience"
+        class="py-24 sm:py-32 px-6 border-t border-line bg-white"
+      >
+        <div class="max-w-content mx-auto">
+          <div class="mb-12">
+            <p class="text-xs uppercase tracking-[0.18em] text-muted">
+              04 — Education
+            </p>
+            <h2 class="mt-3 text-3xl sm:text-5xl font-semibold text-ink">
+              Where I’m studying.
+            </h2>
+          </div>
+
+          <ol class="space-y-2">
+            <li
+              class="group grid grid-cols-12 gap-4 items-start py-6 border-t border-line hover:bg-white/60 rounded-xl px-3 -mx-3 transition-colors duration-200 cursor-default"
+            >
+              <div class="col-span-12 md:col-span-3 text-sm text-muted">
+                2022 — 2026 (Expected)
+              </div>
+              <div class="col-span-12 md:col-span-9">
+                <h3 class="text-xl font-semibold text-ink">
+                  BS Computer Science · University of the Philippines Visayas
+                </h3>
+                <p class="mt-2 text-muted leading-relaxed">
+                  Currently in my 4th year. Coursework spans data structures
+                  &amp; algorithms, software engineering, databases, web
+                  development, and computer networks — paired with hands-on
+                  capstone-style projects spanning web, mobile, and security.
+                </p>
+                <ul class="mt-3 flex flex-wrap gap-1.5">
+                  <li
+                    class="text-xs text-muted border border-line rounded-full px-2.5 py-1"
+                  >
+                    Data Structures
+                  </li>
+                  <li
+                    class="text-xs text-muted border border-line rounded-full px-2.5 py-1"
+                  >
+                    Software Engineering
+                  </li>
+                  <li
+                    class="text-xs text-muted border border-line rounded-full px-2.5 py-1"
+                  >
+                    Databases
+                  </li>
+                  <li
+                    class="text-xs text-muted border border-line rounded-full px-2.5 py-1"
+                  >
+                    Web Development
+                  </li>
+                  <li
+                    class="text-xs text-muted border border-line rounded-full px-2.5 py-1"
+                  >
+                    Networks
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <li
+              class="group grid grid-cols-12 gap-4 items-start py-6 border-t border-b border-line hover:bg-white/60 rounded-xl px-3 -mx-3 transition-colors duration-200 cursor-default"
+            >
+              <div class="col-span-12 md:col-span-3 text-sm text-muted">
+                Highlights
+              </div>
+              <div class="col-span-12 md:col-span-9">
+                <h3 class="text-xl font-semibold text-ink">
+                  Academic Projects &amp; Activities
+                </h3>
+                <p class="mt-2 text-muted leading-relaxed">
+                  Built a full campus information system (BNHS-CIS-Web, deployed
+                  on Vercel), a Flutter-based QR phishing analyzer (QRadar), and
+                  a real-time consultation-scheduling platform for UPV faculty
+                  (UPV OATS). See selected work above for details.
+                </p>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- ===== Testimonials ===== -->
+      <section class="py-24 sm:py-32 px-6 border-t border-line bg-white">
+        <div class="max-w-content mx-auto">
+          <div class="mb-12">
+            <p class="text-xs uppercase tracking-[0.18em] text-muted">
+              05 — Kind words
+            </p>
+            <h2 class="mt-3 text-3xl sm:text-5xl font-semibold text-ink">
+              What teammates say.
+            </h2>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
+            <figure class="rounded-2xl border border-line p-6 sm:p-8">
+              <svg
+                class="w-6 h-6 text-cta"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  d="M9.17 6A4.17 4.17 0 0 0 5 10.17v7.66h7.66V10.17H8.5A.67.67 0 0 1 9.17 9.5h.66V6h-.66Zm9 0A4.17 4.17 0 0 0 14 10.17v7.66h7.66V10.17H17.5a.67.67 0 0 1 .67-.67h.66V6h-.66Z"
+                />
+              </svg>
+              <blockquote class="mt-4 text-lg text-ink leading-relaxed">
+                “Ka dasig ba!”
+                <span class="block mt-2 text-base text-muted italic font-normal"
+                  >“That was very fast!”</span
+                >
+              </blockquote>
+              <figcaption class="mt-5 text-sm text-muted">
+                <span class="text-ink font-medium">Rene Jocsing</span> · UPV
+                Alumni
+              </figcaption>
+            </figure>
+            <figure class="rounded-2xl border border-line p-6 sm:p-8">
+              <svg
+                class="w-6 h-6 text-cta"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  d="M9.17 6A4.17 4.17 0 0 0 5 10.17v7.66h7.66V10.17H8.5A.67.67 0 0 1 9.17 9.5h.66V6h-.66Zm9 0A4.17 4.17 0 0 0 14 10.17v7.66h7.66V10.17H17.5a.67.67 0 0 1 .67-.67h.66V6h-.66Z"
+                />
+              </svg>
+              <blockquote class="mt-4 text-lg text-ink leading-relaxed">
+                “I like how you catch up with us.”
+              </blockquote>
+              <figcaption class="mt-5 text-sm text-muted">
+                <span class="text-ink font-medium">Intern Supervisor</span> ·
+                IBEX Global Solutions
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Contact ===== -->
+      <section id="contact" class="py-24 sm:py-32 px-6 border-t border-line">
+        <div
+          class="max-w-content mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12"
+        >
+          <div class="lg:col-span-5">
+            <p class="text-xs uppercase tracking-[0.18em] text-muted">
+              06 — Contact
+            </p>
+            <h2
+              class="mt-3 text-4xl sm:text-6xl font-semibold text-ink leading-[1]"
+            >
+              Let’s talk<br />about a role.
+            </h2>
+            <p class="mt-6 text-lg text-muted leading-relaxed max-w-md">
+              I read every message. Best for full-time roles, interesting
+              contracts, and friendly hellos.
+            </p>
+
+            <ul class="mt-8 space-y-3 text-ink">
+              <li>
+                <a
+                  class="inline-flex items-center gap-2 hover:text-cta transition-colors duration-200 cursor-pointer"
+                  href="mailto:cagasansinio24@gmail.com"
+                >
+                  <svg
+                    class="w-4 h-4"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    aria-hidden="true"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M4 6h16v12H4zM4 6l8 7 8-7"
+                    />
+                  </svg>
+                  cagasansinio24@gmail.com
+                </a>
+              </li>
+              <li>
+                <a
+                  class="inline-flex items-center gap-2 hover:text-cta transition-colors duration-200 cursor-pointer"
+                  href="https://www.linkedin.com/in/nicole-amoguis-b4b25a310"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                >
+                  <svg
+                    class="w-4 h-4"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"
+                    />
+                  </svg>
+                  www.linkedin.com/in/nicole-amoguis-b4b25a310
+                </a>
+              </li>
+              <li>
+                <a
+                  class="inline-flex items-center gap-2 hover:text-cta transition-colors duration-200 cursor-pointer"
+                  href="https://github.com/colasnido"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                >
+                  <svg
+                    class="w-4 h-4"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M12 .3a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58v-2.23c-3.34.73-4.04-1.42-4.04-1.42-.55-1.39-1.34-1.76-1.34-1.76-1.09-.74.08-.73.08-.73 1.21.08 1.85 1.24 1.85 1.24 1.07 1.85 2.81 1.32 3.5 1 .11-.78.42-1.32.76-1.62-2.66-.3-5.46-1.34-5.46-5.94 0-1.31.47-2.39 1.24-3.23-.13-.31-.54-1.55.12-3.23 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.68.25 2.92.12 3.23.77.84 1.24 1.92 1.24 3.23 0 4.61-2.81 5.63-5.48 5.93.43.37.81 1.1.81 2.22v3.29c0 .32.21.7.83.58A12 12 0 0 0 12 .3"
+                    />
+                  </svg>
+                  github.com/colasnido
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <form
+            id="contactForm"
+            class="lg:col-span-7 rounded-2xl border border-line bg-white p-6 sm:p-8 space-y-5"
+            novalidate
+          >
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div>
+                <label
+                  for="name"
+                  class="block text-sm text-ink font-medium mb-1.5"
+                  >Your name</label
+                >
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  required
+                  autocomplete="name"
+                  class="w-full rounded-lg border border-line bg-page text-ink placeholder:text-soft px-3.5 py-2.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-cta focus-visible:border-cta transition-colors duration-200"
+                  placeholder="Jane Smith"
+                />
+              </div>
+              <div>
+                <label
+                  for="email"
+                  class="block text-sm text-ink font-medium mb-1.5"
+                  >Email</label
+                >
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  required
+                  autocomplete="email"
+                  class="w-full rounded-lg border border-line bg-page text-ink placeholder:text-soft px-3.5 py-2.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-cta focus-visible:border-cta transition-colors duration-200"
+                  placeholder="jane@company.com"
+                />
+              </div>
+            </div>
+            <div>
+              <label
+                for="company"
+                class="block text-sm text-ink font-medium mb-1.5"
+                >Company
+                <span class="text-soft font-normal">(optional)</span></label
+              >
+              <input
+                id="company"
+                name="company"
+                type="text"
+                autocomplete="organization"
+                class="w-full rounded-lg border border-line bg-page text-ink placeholder:text-soft px-3.5 py-2.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-cta focus-visible:border-cta transition-colors duration-200"
+                placeholder="Acme, Inc."
+              />
+            </div>
+            <div>
+              <label
+                for="message"
+                class="block text-sm text-ink font-medium mb-1.5"
+                >Message</label
+              >
+              <textarea
+                id="message"
+                name="message"
+                rows="5"
+                required
+                class="w-full rounded-lg border border-line bg-page text-ink placeholder:text-soft px-3.5 py-2.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-cta focus-visible:border-cta transition-colors duration-200 resize-y"
+                placeholder="Tell me a little about the role, team, and timeline."
+              ></textarea>
+            </div>
+            <div
+              class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-1"
+            >
+              <p
+                id="formStatus"
+                role="status"
+                aria-live="polite"
+                class="text-sm text-soft"
+              >
+                Sends via your email client — no data leaves the page.
+              </p>
+              <button
+                type="submit"
+                class="inline-flex items-center justify-center gap-2 rounded-full bg-ink text-white px-6 py-3 text-sm font-medium hover:bg-cta transition-colors duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cta focus-visible:ring-offset-2 focus-visible:ring-offset-page disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                Send message
+                <svg
+                  class="w-4 h-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  aria-hidden="true"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M5 12h14M13 5l7 7-7 7"
+                  />
+                </svg>
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <!-- ===== Project Modal ===== -->
+    <div
+      id="projectModal"
+      class="project-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalTitle"
+      aria-hidden="true"
+    >
+      <div class="project-modal-backdrop" data-modal-close></div>
+      <div class="project-modal-panel">
+        <button
+          type="button"
+          data-modal-close
+          aria-label="Close project gallery"
+          class="modal-close-btn absolute top-4 right-4 z-10 inline-flex items-center justify-center w-9 h-9 rounded-full bg-white/95 backdrop-blur border border-line text-ink hover:bg-white hover:border-ink transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cta"
+        >
+          <svg
+            class="w-4 h-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M6 6l12 12M18 6L6 18"
+            />
+          </svg>
+        </button>
+        <div id="modalScrollHint" class="modal-scroll-hint" aria-hidden="true">
+          <span>Scroll for more</span>
+          <svg
+            class="w-4 h-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+        </div>
+        <div class="project-modal-body">
+          <div
+            class="aspect-[16/10] bg-zinc-100 overflow-hidden flex items-center justify-center"
+          >
+            <img
+              id="modalPrimary"
+              src=""
+              alt=""
+              class="modal-primary-img max-w-full max-h-full object-contain"
+            />
+          </div>
+          <div
+            id="modalThumbs"
+            class="flex gap-2 px-4 sm:px-6 pt-4 overflow-x-auto"
+          ></div>
+          <div class="p-6 sm:p-8">
+            <h3
+              id="modalTitle"
+              class="text-2xl sm:text-3xl font-semibold text-ink"
+            ></h3>
+            <p id="modalDesc" class="mt-3 text-muted leading-relaxed"></p>
+            <ul id="modalTags" class="mt-5 flex flex-wrap gap-1.5"></ul>
+            <div class="mt-6 flex flex-wrap items-center gap-3">
+              <a
+                id="modalLive"
+                href="#"
+                target="_blank"
+                rel="noreferrer noopener"
+                class="inline-flex items-center gap-2 rounded-full bg-ink text-white px-5 py-2.5 text-sm font-medium hover:bg-cta transition-colors duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cta focus-visible:ring-offset-2 focus-visible:ring-offset-page"
+              >
+                <span class="relative flex h-2 w-2">
+                  <span
+                    class="absolute inline-flex h-full w-full rounded-full bg-emerald-300 opacity-70 animate-ping"
+                  ></span>
+                  <span
+                    class="relative inline-flex h-2 w-2 rounded-full bg-emerald-400"
+                  ></span>
+                </span>
+                View live site
+                <svg
+                  class="w-4 h-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  aria-hidden="true"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M14 3h7v7M10 14L21 3M21 14v7H3V3h7"
+                  />
+                </svg>
+              </a>
+              <a
+                id="modalGithub"
+                href="#"
+                target="_blank"
+                rel="noreferrer noopener"
+                class="inline-flex items-center gap-2 rounded-full border border-line bg-white text-ink px-5 py-2.5 text-sm font-medium hover:border-ink transition-colors duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-page"
+              >
+                <svg
+                  class="w-4 h-4"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M12 .3a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58v-2.23c-3.34.73-4.04-1.42-4.04-1.42-.55-1.39-1.34-1.76-1.34-1.76-1.09-.74.08-.73.08-.73 1.21.08 1.85 1.24 1.85 1.24 1.07 1.85 2.81 1.32 3.5 1 .11-.78.42-1.32.76-1.62-2.66-.3-5.46-1.34-5.46-5.94 0-1.31.47-2.39 1.24-3.23-.13-.31-.54-1.55.12-3.23 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.68.25 2.92.12 3.23.77.84 1.24 1.92 1.24 3.23 0 4.61-2.81 5.63-5.48 5.93.43.37.81 1.1.81 2.22v3.29c0 .32.21.7.83.58A12 12 0 0 0 12 .3"
+                  />
+                </svg>
+                GitHub
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== Footer ===== -->
+    <footer class="border-t border-line px-6 py-10">
+      <div
+        class="max-w-content mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-sm text-soft"
+      >
+        <p>© <span id="year"></span> Nicole Amoguis. All rights reserved.</p>
+        <p>Built with HTML + Tailwind. Designed to be edited.</p>
+      </div>
+    </footer>
+
+    <script>
+      // year
+      document.getElementById("year").textContent = new Date().getFullYear();
+
+      // reveal on scroll
+      const reduceMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+      if (!reduceMotion && "IntersectionObserver" in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) {
+                e.target.classList.add("in");
+                io.unobserve(e.target);
+              }
+            });
+          },
+          { threshold: 0.12 },
+        );
+        document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+      } else {
+        document
+          .querySelectorAll(".reveal")
+          .forEach((el) => el.classList.add("in"));
+      }
+
+      // skills: count-up + bar fill, synced, on first scroll into view
+      const animateSkill = (el) => {
+        const target = parseInt(el.dataset.skillTarget, 10) || 0;
+        const numEl = el.querySelector("[data-skill-num]");
+        const barEl = el.querySelector("[data-skill-bar]");
+        if (reduceMotion) {
+          numEl.textContent = target + "%";
+          barEl.style.width = target + "%";
+          return;
+        }
+        const duration = 1400;
+        const start = performance.now();
+        const tick = (now) => {
+          const t = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - t, 3); // ease-out cubic
+          const current = target * eased;
+          numEl.textContent = Math.round(current) + "%";
+          barEl.style.width = current + "%";
+          if (t < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      };
+      const skillEls = document.querySelectorAll(".skill");
+      if ("IntersectionObserver" in window) {
+        const skillObs = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) {
+                animateSkill(e.target);
+                skillObs.unobserve(e.target);
+              }
+            });
+          },
+          { threshold: 0.4 },
+        );
+        skillEls.forEach((el) => skillObs.observe(el));
+      } else {
+        skillEls.forEach(animateSkill);
+      }
+
+      // project gallery modal
+      const PROJECTS = {
+        bnhs: {
+          title: "BNHS-CIS-Web — Campus Information System",
+          description:
+            "A full-stack campus information system replacing scattered bulletin boards and spreadsheets with a single source of truth. Ships a role-gated admin dashboard with full CRUD over users, classes, subjects, schedules, events, and announcements — defended by three layers of authorization (layout guards, service checks, and Firestore rules) and a Zod-validated CSV bulk-import pipeline.",
+          tags: [
+            "Next.js 16",
+            "React 19",
+            "TypeScript",
+            "Firebase",
+            "Tailwind CSS",
+          ],
+          github: "https://github.com/colasnido/BNHS-CIS-Web",
+          liveUrl: "https://bnhs-cis-web-9azw.vercel.app/",
+          images: [
+            "BNHS%20CIS%20Web%20(1).png",
+            "BNHS%20CIS%20Web%20(2).png",
+            "BNHS%20CIS%20Web%20(3).png",
+          ],
+        },
+        oats: {
+          title: "UPV OATS — Online Appointment Tracking System",
+          description:
+            "A consultation-scheduling platform connecting University of the Philippines Visayas students and faculty. Students request meetings; faculty approve, reschedule, or decline — all kept in sync through a real-time calendar with full meeting metadata (course, location, type, notes). Built end-to-end with a clean, accessible UI inspired by the UPV brand.",
+          tags: ["Next.js", "TypeScript", "Firebase", "Tailwind CSS"],
+          github: "https://github.com/colasnido/UPV-OATS",
+          images: ["UPV%20OATS%20(1).png", "UPV%20OATS%20(2).png"],
+        },
+        qradar: {
+          title: "QRadar — QR Phishing Defense",
+          description:
+            "A cross-platform Flutter app that catches malicious QR codes before they reach the browser. Decoded URLs run through four independent security modules — lexical analysis, domain metadata, redirect-chain tracing, and SSL/TLS validation — whose risk scores aggregate into a clear Safe / Suspicious / Malicious verdict. Tuned against a 100-URL evaluation dataset.",
+          tags: ["Flutter", "Dart", "Cross-platform", "Security"],
+          github: "https://github.com/colasnido/QRadar",
+          images: [
+            "qrscanner%20(1).jpg",
+            "qrscanner%20(2).jpg",
+            "qrscanner%20(3).jpg",
+          ],
+        },
+        fishernet: {
+          title: "Fishernet — Fisherman's Digital Logbook",
+          description:
+            "A web dashboard replacing paper logbooks for small-scale fishermen. Records catches with species and quantity, tracks fishing zones by latitude/longitude, manages equipment and maintenance history, and follows live market prices — all behind session-based authentication on a normalized MySQL schema.",
+          tags: ["PHP", "MySQL", "JavaScript", "CSS"],
+          github: "https://github.com/colasnido/Fishernet",
+          images: [
+            "fishernet%20(1).png",
+            "fishernet%20(2).png",
+            "fishernet%20(3).png",
+          ],
+        },
+      };
+
+      const projectModal = document.getElementById("projectModal");
+      const modalTitle = document.getElementById("modalTitle");
+      const modalDesc = document.getElementById("modalDesc");
+      const modalTags = document.getElementById("modalTags");
+      const modalGithub = document.getElementById("modalGithub");
+      const modalLive = document.getElementById("modalLive");
+      const modalPrimary = document.getElementById("modalPrimary");
+      const modalThumbs = document.getElementById("modalThumbs");
+      const modalScrollHint = document.getElementById("modalScrollHint");
+      const modalBodyEl = projectModal.querySelector(".project-modal-body");
+      let lastFocusedCard = null;
+      let scrollHintTimer = null;
+
+      const setActiveThumb = (btn) => {
+        modalThumbs.querySelectorAll(".thumb").forEach((b) => {
+          b.classList.remove("active");
+          b.style.borderColor = "transparent";
+        });
+        btn.classList.add("active");
+        btn.style.borderColor = "#2563EB";
+      };
+
+      const openProject = (id) => {
+        const p = PROJECTS[id];
+        if (!p) return;
+        lastFocusedCard = document.activeElement;
+        modalTitle.textContent = p.title;
+        modalDesc.textContent = p.description;
+        modalTags.innerHTML = p.tags
+          .map(
+            (t) =>
+              '<li class="text-xs text-muted border border-line rounded-full px-2.5 py-1">' +
+              t +
+              "</li>",
+          )
+          .join("");
+        if (p.liveUrl) {
+          modalLive.href = p.liveUrl;
+          modalLive.style.display = "";
+        } else {
+          modalLive.style.display = "none";
+        }
+        if (p.github) {
+          modalGithub.href = p.github;
+          modalGithub.style.display = "";
+        } else {
+          modalGithub.style.display = "none";
+        }
+        modalPrimary.src = p.images[0];
+        modalPrimary.alt = p.title;
+        modalThumbs.innerHTML = p.images
+          .map(
+            (src, i) =>
+              '<button type="button" data-src="' +
+              src +
+              '" class="thumb shrink-0 w-20 h-14 sm:w-24 sm:h-16 rounded-lg overflow-hidden border-2 ' +
+              (i === 0 ? "active" : "") +
+              '" style="border-color:' +
+              (i === 0 ? "#2563EB" : "transparent") +
+              '"><img src="' +
+              src +
+              '" alt="" class="w-full h-full object-cover" /></button>',
+          )
+          .join("");
+        modalThumbs.querySelectorAll(".thumb").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            setActiveThumb(btn);
+            modalPrimary.style.opacity = "0";
+            setTimeout(() => {
+              modalPrimary.src = btn.dataset.src;
+              modalPrimary.style.opacity = "1";
+            }, 160);
+          });
+        });
+        document.body.style.overflow = "hidden";
+        projectModal.setAttribute("aria-hidden", "false");
+        projectModal.classList.add("show");
+        modalBodyEl.scrollTop = 0;
+        modalScrollHint.classList.remove("show");
+        if (scrollHintTimer) clearTimeout(scrollHintTimer);
+        requestAnimationFrame(() =>
+          requestAnimationFrame(() => projectModal.classList.add("open")),
+        );
+        setTimeout(
+          () => projectModal.querySelector(".modal-close-btn")?.focus(),
+          380,
+        );
+        const showHintIfScrollable = () => {
+          if (modalBodyEl.scrollHeight > modalBodyEl.clientHeight + 4) {
+            modalScrollHint.classList.add("show");
+            scrollHintTimer = setTimeout(
+              () => modalScrollHint.classList.remove("show"),
+              6000,
+            );
+          }
+        };
+        setTimeout(showHintIfScrollable, 600);
+        const hideHintOnScroll = () => {
+          modalScrollHint.classList.remove("show");
+          if (scrollHintTimer) clearTimeout(scrollHintTimer);
+          modalBodyEl.removeEventListener("scroll", hideHintOnScroll);
+        };
+        modalBodyEl.addEventListener("scroll", hideHintOnScroll, {
+          passive: true,
+        });
+      };
+
+      const closeProject = () => {
+        projectModal.classList.remove("open");
+        modalScrollHint.classList.remove("show");
+        if (scrollHintTimer) clearTimeout(scrollHintTimer);
+        setTimeout(() => {
+          projectModal.classList.remove("show");
+          projectModal.setAttribute("aria-hidden", "true");
+          document.body.style.overflow = "";
+          if (lastFocusedCard && typeof lastFocusedCard.focus === "function") {
+            lastFocusedCard.focus();
+          }
+        }, 300);
+      };
+
+      document.querySelectorAll("[data-project]").forEach((card) => {
+        card.addEventListener("click", () => openProject(card.dataset.project));
+      });
+      projectModal
+        .querySelectorAll("[data-modal-close]")
+        .forEach((el) => el.addEventListener("click", closeProject));
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && projectModal.classList.contains("show")) {
+          closeProject();
+        }
+      });
+
+      // contact form -> mailto (no backend required)
+      const form = document.getElementById("contactForm");
+      const status = document.getElementById("formStatus");
+      const RECIPIENT = "cagasansinio24@gmail.com"; // <-- change to your email
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const data = new FormData(form);
+        const name = (data.get("name") || "").toString().trim();
+        const email = (data.get("email") || "").toString().trim();
+        const company = (data.get("company") || "").toString().trim();
+        const message = (data.get("message") || "").toString().trim();
+        if (!name || !email || !message) {
+          status.textContent =
+            "Please fill in your name, email, and a short message.";
+          status.className = "text-sm text-red-600";
+          return;
+        }
+        const subject = encodeURIComponent(
+          `Hello from ${name}${company ? " (" + company + ")" : ""}`,
+        );
+        const body = encodeURIComponent(
+          `${message}\n\n— ${name}\n${email}${company ? "\n" + company : ""}`,
+        );
+        window.location.href = `mailto:${RECIPIENT}?subject=${subject}&body=${body}`;
+        status.textContent = "Opening your email client…";
+        status.className = "text-sm text-emerald-700";
+      });
+    </script>
+  </body>
+</html>
